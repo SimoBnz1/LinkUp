@@ -1,3 +1,45 @@
+#  LinkUp — Clone Professionnel LinkedIn 
+
+LinkUp est un réseau social innovant destiné aux professionnels et aux recruteurs. Ce projet est développé avec le framework **Laravel 12** et stylisé avec **Tailwind CSS**. L'objectif de cette première semaine est de poser des bases architecturales robustes en modélisant les données fondamentales (utilisateurs et publications) et en affichant un fil d'actualité dynamique, fluide et performant.
+
+---
+
+##  Fonctionnalités Implémentées (Épic 1)
+
+* **[US 1.1] Fil d'actualité dynamique (`/feed`) :** Une page d'accueil qui récupère et affiche l'ensemble des publications de la communauté, triées automatiquement de la plus récente à la plus ancienne.
+* **[US 1.2] Profilage complet des auteurs :** Affichage transparent des métadonnées professionnelles de chaque auteur (Nom, Headline, Entreprise, Avatar) directement sur chaque post grâce à la puissance des relations Eloquent.
+* **Héritage de Layouts Blade (DRY) :** Utilisation d'un système d'héritage de layouts parents (`layouts/app.blade.php`) contenant une barre de navigation supérieure moderne (style LinkedIn) pour éviter toute redondance de code HTML.
+* **Gestion des états vides (`@forelse`) :** Le fil d'actualité anticipe l'absence de données grâce à la structure `@forelse` de Blade, affichant un message propre et ergonomique si aucun post n'existe.
+
+---
+
+## Architecture Technique & Base de données
+
+L'application repose sur deux entités interconnectées avec une intégrité référentielle stricte :
+* **User (Utilisateur) :** Possède plusieurs `Posts` (Relation `hasMany()` dans le modèle `User`).
+* **Post (Publication) :** Appartient à un seul `User` (Relation `belongsTo()` dans le modèle `Post`). En cas de suppression d'un compte utilisateur, l'ensemble de ses publications est supprimé automatiquement grâce à la contrainte d'intégrité de la base de données (`onDelete('cascade')`).
+
+###  Structure Clé du Projet Manipulée :
+```text
+├── app/
+│   ├── Http/Controllers/
+│   │   └── PostController.php    # Récupère les posts et orchestre la vue
+│   └── Models/
+│       ├── Post.php              # Gère la relation inverse (BelongsTo User)
+│       └── User.php              # Gère la relation (HasMany Posts)
+├── database/
+│   └── migrations/
+│       ├── 2014_10_12_000000_create_users_table.php  # Adaptée avec headline, company, image_url
+│       └── 2026_06_19_000000_create_posts_table.php  # Clé étrangère et contenu du post
+├── routes/
+│   └── web.php                   # Définition propre de la route /feed (Zéro logique métier)
+└── resources/
+    └── views/
+        ├── feed.blade.php        # Vue principale du fil d'actualité (Hérite du layout)
+        └── layouts/
+            └── app.blade.php     # Structure HTML globale (Navbar moderne & fonts)
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
