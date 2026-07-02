@@ -20,7 +20,14 @@ class AuthController extends Controller
     {
         return view('auth.register');
     }
-   
+    public function login(LoginUserRequest $request)
+    {
+            $validated=$request->validated();
+            if(Auth::attempt($validated)) 
+              {
+                return redirect()->route('feed');
+              }
+    }
 
     public function register(RegisterUserRequest $request)
     {
@@ -34,7 +41,7 @@ class AuthController extends Controller
       
     }
 
-  
+ 
 
     
 
