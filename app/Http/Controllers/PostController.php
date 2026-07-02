@@ -33,5 +33,20 @@ class PostController extends Controller
     }
 
 
+    public function PageUpdate(Post $post )
+    {
+        return view('posts.updatePost',compact('post'));
+    }
+
+    public function updatePost(Request $request, Post $post)
+    {
+        $this->authorize('update', $post);
+
+        $post->update([
+            'content' => $request->content
+        ]);
+        return redirect()->route('feed')->with('success','post deleted seccessfully');
+    }
+
     
 }
