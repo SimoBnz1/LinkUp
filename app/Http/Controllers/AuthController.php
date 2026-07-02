@@ -20,6 +20,24 @@ class AuthController extends Controller
     {
         return view('auth.register');
     }
+   
+
+    public function register(RegisterUserRequest $request)
+    {
+        $validated = $request->validated();
+        
+        $validated['password'] = Hash::make($validated['password']);
+
+        $user=User::create($validated);
+        Auth::login($user);
+        return redirect()->route('feed');
+      
+    }
+
+  
+
     
+
+
 
 }
