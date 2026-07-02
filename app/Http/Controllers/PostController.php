@@ -17,7 +17,15 @@ class PostController extends Controller
         return view('feed', compact('posts'));
     }
 
-  
+    public function storPost(PostRequest $request)
+    {
+        $request->validated();
+        Post::create([
+            'content' => $request->content,
+            'user_id' => Auth::id(),
+        ]);
+        return redirect()->route('feed')->with('success', 'post est creer');
+    }
 
     public function formPost()
     {
@@ -25,5 +33,5 @@ class PostController extends Controller
     }
 
 
-   
+    
 }
