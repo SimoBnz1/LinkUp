@@ -2,17 +2,51 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class PostController extends Controller
 {
-    public function index()
-{
-   
-    $posts = Post::orderBy('created_at', 'desc')->get();
-    return view('feed', compact('posts')); 
+      use AuthorizesRequests;
+    public function feed()
+    {
+        $posts = Post::orderBy('created_at', 'desc')->get();
+        return view('feed', compact('posts'));
+    }
+
+    public function storPost(PostRequest $request)
+    {
+        $request->validated();
+        Post::create([
+            'content' => $request->content,
+            'user_id' => Auth::id(),
+        ]);
+        return redirect()->route('feed')->with('success', 'post est creer');
+    }
+
+    public function formPost()
+    {
+        return view('posts.createPost');
+    }
+
+
+    public function PageUpdate(Post $post )
+    {
+        return view('posts.updatePost',compact('post'));
+    }
+
+    public function updatePost(Request $request, Post $post)
+    {
+        $this->authorize('update', $post);
+
+        $post->update([
+            'content' => $request->content
+        ]);
+        return redirect()->route('feed')->with('success','post deleted seccessfully');
+    }
+
     
-   
-}
 }
