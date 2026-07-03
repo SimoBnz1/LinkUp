@@ -109,7 +109,7 @@
                                 @can("update", $post)
                                 <a href="{{ route('PageUpdate',$post)}}"
                                     class="update-post-btn text-[11px] text-indigo-600 font-bold bg-indigo-50 hover:bg-indigo-100 px-2.5 py-1.5 rounded-lg transition-all cursor-pointer">
-                                    <i class="fa-solid fa-pen mr-1"></i> Modifier
+                                    <i class="fa-solid fa-pen mr-1"></i> 
                                 </a>
 
                                 @endcan
@@ -119,7 +119,7 @@
                                     @csrf
                                     @method('delete')
                                     <button class="text-[11px] text-rose-600 font-bold bg-rose-50 hover:bg-rose-100 px-2.5 py-1.5 rounded-lg transition-all cursor-pointer">
-                                        <i class="fa-solid fa-trash mr-1"></i> Delete
+                                        <i class="fa-solid fa-trash mr-1"></i> 
                                     </button>
                                 </form>
                                 @endcan
