@@ -41,12 +41,16 @@ class PostController extends Controller
     public function updatePost(Request $request, Post $post)
     {
         $this->authorize('update', $post);
-
         $post->update([
             'content' => $request->content
         ]);
         return redirect()->route('feed')->with('success','post deleted seccessfully');
     }
 
-    
+    public function deletePost(Post $post)
+    {
+        $this->authorize('delete',$post);
+        $post->delete();
+        return redirect()->route('feed')->with('success','post deleted seccessfully');
+    }
 }
