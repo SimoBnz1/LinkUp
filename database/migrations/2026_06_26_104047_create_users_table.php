@@ -17,6 +17,7 @@ return new class extends Migration
       $table->string('headline');
       $table->string('company')->nullable(); 
       $table->string('image_url')->nullable();
+      $table->boolean('is_open_to_work')->default(false);
       $table->rememberToken();
       $table->timestamps();
       

@@ -11,6 +11,6 @@ class Controller
 
     public function profile()
     {
-            return view('profile.profile');
+            return view('profile.MyProfile');
     }
 }

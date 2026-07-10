@@ -20,7 +20,7 @@ Route::middleware(['is_login'])->group(function () {
 
 
     Route::get('/profile', [Controller::class, 'profile'])->name('profile');
-   Route::get('/editProfile/{user}', [UserController::class, 'editProfile'])
+    Route::get('/editProfile/{user}', [UserController::class, 'editProfile'])
     ->name('editProfile');
     Route::put('/updateProfile/{user}', [UserController::class, 'updateProfile'])
     ->name('updateProfile');
