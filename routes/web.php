@@ -9,7 +9,6 @@ use App\Http\Controllers\UserController;
 Route::middleware(['is_login'])->group(function () {
 
     Route::get('/feed', [PostController::class, 'feed'])->name('feed');
-    Route::post('/feed', [PostController::class, 'feed'])->name('feed');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/formPost', [PostController::class, 'formPost'])->name('creatPost');
     Route::post('/creatPost',[PostController::class,'storPost'])->name('storPost');
@@ -24,6 +23,8 @@ Route::middleware(['is_login'])->group(function () {
     ->name('editProfile');
     Route::put('/updateProfile/{user}', [UserController::class, 'updateProfile'])
     ->name('updateProfile');
+    Route::post('/users/{user}/follow', [UserController::class, 'toggleFollow'])
+    ->name('users.follow');
 
 
 
@@ -42,7 +43,7 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/showRegister', [AuthController::class, 'showRegister'])->name('auth.register');
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/register', [AuthController::class, 'register'])->name('register');
-
+route::get('/hello',[UserController::class,"hello"]);
 
 
 

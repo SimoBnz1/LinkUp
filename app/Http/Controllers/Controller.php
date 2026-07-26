@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
 class Controller
 {
     public function index()
@@ -10,7 +13,10 @@ class Controller
     }
 
     public function profile()
-    {
-            return view('profile.MyProfile');
-    }
+{
+    $user = Auth::user();
+
+    return view('profile.MyProfile', compact('user'));
+}
+
 }

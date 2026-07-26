@@ -6,7 +6,7 @@ use App\Http\Requests\CommentRequest;
 use App\Http\Requests\PostRequest;
 use App\Models\Comment;
 use App\Models\Post;
-
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -14,21 +14,13 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class PostController extends Controller
 {
     use AuthorizesRequests;
-    public function feed(Request $request)
-    {
-        $query = Post::with('user')->latest();
+    public function feed()
+{
 
-        if ($request->has('company') && $request->company != '') {
+    $posts=Post::with('user')->get();
 
-            $query->whereHas('user', function ($q) use ($request) {
-
-                $q->where('company', $request->company);
-            });
-        }
-        $posts = $query->get();
-
-        return view('feed', compact('posts'));
-    }
+    return view('feed', compact('posts'));
+}
 
     public function storPost(PostRequest $request)
     {
@@ -39,6 +31,9 @@ class PostController extends Controller
         ]);
         return redirect()->route('feed')->with('success', 'post est creer');
     }
+
+
+    
 
     public function formPost()
     {

@@ -2,17 +2,17 @@
 
 @section('content')
 <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 selection:bg-indigo-600/10 selection:text-indigo-600 bg-[#f8fafc] min-h-screen text-slate-700 antialiased font-sans relative">
-    
+
     <!-- SUBTLE BACKGROUND BLURS -->
     <div class="absolute top-0 left-1/3 w-[600px] h-[600px] bg-gradient-to-tr from-indigo-500/5 to-emerald-500/5 rounded-full blur-[140px] pointer-events-none -z-10"></div>
 
     <!-- MAIN GRID LAYOUT -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        
+
         <!-- LEFT SIDEBAR: PROFILE IDENTITY CARD -->
         <div class="lg:col-span-1 lg:sticky lg:top-8 space-y-6">
             <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.02)] relative overflow-hidden group transition-all duration-300 hover:shadow-[0_15px_40px_rgba(0,0,0,0.04)]">
-                
+
                 <!-- Avatar Center Display -->
                 <div class="flex flex-col items-center text-center">
                     <div class="relative group/avatar mb-5">
@@ -35,7 +35,7 @@
                     <h1 class="font-black text-xl text-slate-900 tracking-tight mb-1">
                         {{ $user->name }}
                     </h1>
-                    
+
                     <span class="text-[11px] text-indigo-600 font-bold tracking-wide uppercase bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full mb-4 block">
                         {{ $user->headline ?? 'Professionnel du Réseau' }}
                     </span>
@@ -52,6 +52,31 @@
                         </button>
                     </div>
                 </div>
+                <div class="w-full space-y-2">
+
+                    <!-- زر الـ Follow / Unfollow الديناميكي مأمن -->
+                    @if(Auth::id() !== $user->id)
+                    <form action="{{ route('users.follow', $user) }}" method="POST" class="w-full">
+                        @csrf
+                        @if(Auth::user()->followings->contains($user->id))
+                        <!-- إيلا كنتي ديجا متبعو كيبان زر Unfollow بالأحمر أو الرمادي -->
+                        <button type="submit" class="w-full bg-slate-100 hover:bg-rose-50 hover:text-rose-600 border border-slate-200 text-slate-700 font-bold text-xs py-3 rounded-xl transition-all duration-300 active:scale-[0.98] tracking-wider uppercase flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-user-minus text-[10px]"></i> Ne plus suivre
+                        </button>
+                        @else
+                        <!-- إيلا مكنتيش متبعو كيبان زر Follow بالأسود -->
+                        <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs py-3 rounded-xl transition-all duration-300 shadow-sm active:scale-[0.98] tracking-wider uppercase flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-user-plus text-[10px]"></i> Suivre
+                        </button>
+                        @endif
+                    </form>
+
+                    @endif
+
+                    <button class="w-full bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs py-3 rounded-xl transition-all duration-300 active:scale-[0.98] tracking-wider uppercase flex items-center justify-center gap-2">
+                        <i class="fa-regular fa-paper-plane text-slate-500"></i> Message
+                    </button>
+                </div>
 
                 <!-- Subtle Links Box -->
                 <div class="mt-6 pt-5 border-t border-slate-100 text-center">
@@ -62,39 +87,46 @@
 
         <!-- RIGHT CONTENT AREA: METRICS, ABOUT & ACTIVITY -->
         <div class="lg:col-span-2 space-y-6">
-            
+
+            <!-- HORIZONTAL METRICS BAR -->
             <!-- HORIZONTAL METRICS BAR -->
             <div class="bg-white border border-slate-200/80 rounded-3xl p-5 grid grid-cols-3 gap-2 shadow-[0_8px_30px_rgb(0,0,0,0.02)]">
                 <div class="text-center py-2 group/metric cursor-pointer border-r border-slate-100">
-                    <span class="block text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-1">Relations</span>
-                    <span class="block font-black text-xl text-slate-800 font-mono group-hover/metric:text-indigo-600 transition-colors">500+</span>
+                    <span class="block text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-1">Abonnés</span>
+                    <span class="block font-black text-xl text-slate-800 font-mono group-hover/metric:text-indigo-600 transition-colors">
+                        {{ $user->followers->count() }}
+                    </span>
                 </div>
                 <div class="text-center py-2 group/metric cursor-pointer border-r border-slate-100">
-                    <span class="block text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-1">Vues</span>
-                    <span class="block font-black text-xl text-slate-800 font-mono group-hover/metric:text-purple-600 transition-colors">1,420</span>
+                    <span class="block text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-1">Abonnements</span>
+                    <span class="block font-black text-xl text-slate-800 font-mono group-hover/metric:text-purple-600 transition-colors">
+                        {{ $user->followings->count() }}
+                    </span>
                 </div>
                 <div class="text-center py-2 group/metric cursor-pointer">
                     <span class="block text-[10px] uppercase font-bold text-slate-400 tracking-widest mb-1">Posts</span>
-                    <span class="block font-black text-xl text-slate-800 font-mono group-hover/metric:text-emerald-600 transition-colors">84</span>
+                    <span class="block font-black text-xl text-slate-800 font-mono group-hover/metric:text-emerald-600 transition-colors">
+                        {{ $user->post->count() }}
+                    </span>
                 </div>
             </div>
 
             <!-- ABOUT INFOCARD BOX -->
             <div class="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.02)] space-y-5 relative overflow-hidden">
-                
+
                 <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
                     <div class="w-1.5 h-3 bg-indigo-600 rounded-sm"></div>
                     <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest">
                         Infos de fond / Résumé
                     </h3>
                 </div>
-                
+
                 <p class="text-slate-600 text-sm sm:text-base leading-relaxed whitespace-pre-line font-medium tracking-wide">
-                    Passionné par l'architecture logicielle et l'expérience utilisateur de pointe. J'accompagne les startups et les entreprises dans le déploiement d'interfaces web fluides, hautement performantes et à forte scalabilité. 
-                    
+                    Passionné par l'architecture logicielle et l'expérience utilisateur de pointe. J'accompagne les startups et les entreprises dans le déploiement d'interfaces web fluides, hautement performantes et à forte scalabilité.
+
                     Adepte du minimalisme, du clean-code et des micro-interactions qui font la différence. Parlons technologie, UI/UX ou opportunités de croissance !
                 </p>
-                
+
                 <div class="flex flex-wrap gap-2 pt-1">
                     <span class="text-[10px] bg-slate-50 border border-slate-200 text-slate-600 font-mono px-3 py-1.5 rounded-xl hover:bg-slate-100 transition-colors cursor-default">#UIUX</span>
                     <span class="text-[10px] bg-indigo-50/50 border border-indigo-100/80 text-indigo-600 font-mono px-3 py-1.5 rounded-xl hover:bg-indigo-50 transition-colors cursor-default">#Laravel</span>

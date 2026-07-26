@@ -19,15 +19,15 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-    'name',
-    'headline',
-    'company',
-    'image_url',
-    'is_open_to_work',
-    'email',
-    'password',
-];
-    
+        'name',
+        'headline',
+        'company',
+        'image_url',
+        'is_open_to_work',
+        'email',
+        'password',
+    ];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -52,16 +52,28 @@ class User extends Authenticatable
         ];
     }
 
-    public function post(){
+    public function post()
+    {
         return $this->hasMany(Post::class);
     }
 
-    public function comment(){
+    public function comment()
+    {
         return $this->hasMany(Comment::class);
     }
 
     public function likes()
     {
-        return $this->belongsToMany(Post::class,'likes');
+        return $this->belongsToMany(Post::class, 'likes');
+    }
+
+    public function followings()
+    {
+        return $this->belongsToMany(User::class, 'followers', 'follower_id', 'following_id')->withTimestamps();
+    }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'followers', 'following_id', 'follower_id')->withTimestamps();
     }
 }
