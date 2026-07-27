@@ -15,12 +15,42 @@
 
                 <!-- Avatar Center Display -->
                 <div class="flex flex-col items-center text-center">
+                    <!-- Action Triggers -->
+                    <div class="w-full space-y-2">
+
+                        <!-- زر الـ Follow / Unfollow الديناميكي مأمن -->
+                        @if(Auth::id() !== $user->id)
+                        <form action="{{ route('users.follow', $user) }}" method="POST" class="w-full">
+                            @csrf
+                            @if(Auth::user()->followings->contains($user->id))
+                            <!-- إيلا كنتي ديجا متبعو كيبان زر Unfollow بالأحمر أو الرمادي -->
+                            <button type="submit" class="w-full bg-slate-100 hover:bg-rose-50 hover:text-rose-600 border border-slate-200 text-slate-700 font-bold text-xs py-3 rounded-xl transition-all duration-300 active:scale-[0.98] tracking-wider uppercase flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-user-minus text-[10px]"></i> Ne plus suivre
+                            </button>
+                            @else
+                            <!-- إيلا مكنتيش متبعو كيبان زر Follow بالأسود -->
+                            <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs py-3 rounded-xl transition-all duration-300 shadow-sm active:scale-[0.98] tracking-wider uppercase flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-user-plus text-[10px]"></i> Suivre
+                            </button>
+                            @endif
+                        </form>
+                        @else
+                        <!-- إيلا كان هذا هو البروفايل ديالي أنا، كيبان لِي زر التعديل عوض الفولو -->
+                        <a href="{{ route('editProfile', $user) }}" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs py-3 rounded-xl transition-all duration-300 text-center block tracking-wider uppercase">
+                            <i class="fa-regular fa-pen-to-square mr-1"></i> Modifier mon profil
+                        </a>
+                        @endif
+
+                        <button class="w-full bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs py-3 rounded-xl transition-all duration-300 active:scale-[0.98] tracking-wider uppercase flex items-center justify-center gap-2">
+                            <i class="fa-regular fa-paper-plane text-slate-500"></i> Message
+                        </button>
+                    </div>
                     <div class="relative group/avatar mb-5">
                         <!-- Premium Soft Squircle Avatar Frame -->
                         <div class="w-32 h-32 rounded-[2.2rem] bg-slate-50 border border-slate-200/60 p-1.5 shadow-[0_10px_25px_rgba(0,0,0,0.05)] transition-all duration-500 group-hover/avatar:scale-105 group-hover/avatar:rotate-2">
                             <div class="w-full h-full rounded-[1.8rem] bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center border border-slate-200/30">
                                 <span class="font-black text-3xl tracking-tighter bg-gradient-to-r from-slate-800 via-slate-700 to-slate-900 bg-clip-text text-transparent uppercase">
-                                    {{ substr($user->name, 0, 2) }}
+                                    {{ substr(Auth::user()->name, 0, 2) }}
                                 </span>
                             </div>
                         </div>
@@ -33,16 +63,18 @@
 
                     <!-- Meta Info -->
                     <h1 class="font-black text-xl text-slate-900 tracking-tight mb-1">
-                        {{ $user->name }}
+                        {{ Auth::user()->name }}
                     </h1>
 
                     <span class="text-[11px] text-indigo-600 font-bold tracking-wide uppercase bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full mb-4 block">
-                        {{ $user->headline ?? 'Professionnel du Réseau' }}
+                        {{ Auth::user()->headline ?? 'Professionnel du Réseau' }}
                     </span>
 
                     <p class="text-xs text-slate-400 font-medium flex items-center gap-1.5 mb-6">
                         <i class="fa-solid fa-location-dot text-slate-400"></i> Casablanca, Maroc
                     </p>
+
+                    <!-- Action Triggers -->
                     <div class="w-full space-y-2">
                         <button class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs py-3 rounded-xl transition-all duration-300 shadow-sm active:scale-[0.98] tracking-wider uppercase flex items-center justify-center gap-2">
                             <i class="fa-solid fa-user-plus text-[10px]"></i> Connecter
@@ -51,31 +83,6 @@
                             <i class="fa-regular fa-paper-plane text-slate-500"></i> Message
                         </button>
                     </div>
-                </div>
-                <div class="w-full space-y-2">
-
-                    <!-- زر الـ Follow / Unfollow الديناميكي مأمن -->
-                    @if(Auth::id() !== $user->id)
-                    <form action="{{ route('users.follow', $user) }}" method="POST" class="w-full">
-                        @csrf
-                        @if(Auth::user()->followings->contains($user->id))
-                        <!-- إيلا كنتي ديجا متبعو كيبان زر Unfollow بالأحمر أو الرمادي -->
-                        <button type="submit" class="w-full bg-slate-100 hover:bg-rose-50 hover:text-rose-600 border border-slate-200 text-slate-700 font-bold text-xs py-3 rounded-xl transition-all duration-300 active:scale-[0.98] tracking-wider uppercase flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-user-minus text-[10px]"></i> Ne plus suivre
-                        </button>
-                        @else
-                        <!-- إيلا مكنتيش متبعو كيبان زر Follow بالأسود -->
-                        <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs py-3 rounded-xl transition-all duration-300 shadow-sm active:scale-[0.98] tracking-wider uppercase flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-user-plus text-[10px]"></i> Suivre
-                        </button>
-                        @endif
-                    </form>
-
-                    @endif
-
-                    <button class="w-full bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs py-3 rounded-xl transition-all duration-300 active:scale-[0.98] tracking-wider uppercase flex items-center justify-center gap-2">
-                        <i class="fa-regular fa-paper-plane text-slate-500"></i> Message
-                    </button>
                 </div>
 
                 <!-- Subtle Links Box -->
@@ -109,7 +116,7 @@
                         {{ $user->post->count() }}
                     </span>
                 </div>
-            </div>
+            </div>>
 
             <!-- ABOUT INFOCARD BOX -->
             <div class="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.02)] space-y-5 relative overflow-hidden">

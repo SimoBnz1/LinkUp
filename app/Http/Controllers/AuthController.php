@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    
     public function showLogin()
     {
         return view('auth.login');
@@ -21,7 +22,7 @@ class AuthController extends Controller
         return view('auth.register');
     }
     public function login(LoginUserRequest $request)
-    {
+    {echo 'anahna';
             $validated=$request->validated();
             if(Auth::attempt($validated)) 
               {
